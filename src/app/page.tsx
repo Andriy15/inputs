@@ -1,13 +1,13 @@
 'use client'
-import React from 'react';
+import React, {useState} from 'react';
 import { TextField } from '@mui/material';
 import {NumericFormat, PatternFormat} from "react-number-format";
-import {IMaskInput} from "react-imask";
 import MaskedInput from "react-text-mask";
-import InputMask from "react-input-mask";
 
 export default function Home() {
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = useState("")
+  const [url, setUrl] = useState('')
+
 
   const handleBlur = () => {
     if (value && !/\.\d{2}$/.test(value)) {
@@ -15,25 +15,23 @@ export default function Home() {
     }
   }
 
-  const [url, setUrl] = React.useState('');
+  const handleFocus = () => {
+    let updatedUrl = url;
+    if (!url.includes('.com')) {
+      updatedUrl += '.com';
+    }
+    setUrl(updatedUrl)
+  }
+
 
   const handleChange = (event: any) => {
-    setUrl(event.target.value);
-  };
+    setUrl(event.target.value)
+  }
 
   const urlMask = [
     'https://',
-    /[a-z]/,
-    /[a-z]/,
-    /[a-z]/,
-    /[a-z]/,
-    /[a-z]/,
-    /[a-z]/,
-    /[a-z]/,
-    /[a-z]/,
-    /[a-z]/,
-    '.com'
-  ];
+    ...Array.from({ length: 30 }, () => /[a-z.]/),
+  ]
 
   return (
      <div className="m-8">
@@ -60,21 +58,22 @@ export default function Home() {
           label="Phone"
        />
 
-       <div className="m-8">
-         <MaskedInput
-            onChange={handleChange}
-            mask={urlMask}
-            guide={false}
-            render={(ref, props) => (
-               <TextField
-                  inputRef={ref}
-                  {...props}
-                  label="Domain"
-                  variant="outlined"
-               />
-            )}
-         />
-       </div>
+       <MaskedInput
+          value={url}
+          onBlur={handleFocus}
+          className='ml-6'
+          onChange={handleChange}
+          mask={urlMask}
+          guide={false}
+          render={(ref, props) => (
+             <TextField
+                inputRef={ref}
+                {...props}
+                label="Domain"
+                variant="outlined"
+             />
+          )}
+       />
      </div>
   );
 }
