@@ -1,5 +1,5 @@
 'use client'
-import React from 'react';
+import React, {forwardRef} from 'react';
 import { TextField } from '@mui/material';
 import {NumericFormat, PatternFormat, NumericFormatProps} from "react-number-format";
 import MaskedInput from "react-text-mask";
@@ -10,9 +10,10 @@ interface CustomProps {
   name: string;
 }
 
-const NumericFormatCustomAmount = React.forwardRef<NumericFormatProps, CustomProps>(
+const NumericFormatCustomAmount = forwardRef<NumericFormatProps, CustomProps>(
    function NumericFormatCustom(props, ref) {
-     const { onChange, ...other } = props;
+     const { onChange, ...other } = props
+
      return (
         <NumericFormat
            {...other}
@@ -23,19 +24,21 @@ const NumericFormatCustomAmount = React.forwardRef<NumericFormatProps, CustomPro
                  name: props.name,
                  value: values.value,
                },
-             });
+             })
            }}
            thousandSeparator
            valueIsNumericString
            prefix="$"
+           decimalScale={2}
         />
      )
    }
 )
 
-const NumericFormatCustomCount = React.forwardRef<NumericFormatProps, CustomProps>(
+const NumericFormatCustomCount = forwardRef<NumericFormatProps, CustomProps>(
     function NumericFormatCustom(props, ref) {
-      const { onChange, ...other } = props;
+      const { onChange, ...other } = props
+
       return (
           <NumericFormat
               {...other}
@@ -55,6 +58,38 @@ const NumericFormatCustomCount = React.forwardRef<NumericFormatProps, CustomProp
     }
 )
 
+const MaskedInputCustom = forwardRef<CustomProps, CustomProps>(
+    function MaskedInputCustom(props) {
+      const [domainMaskLength, setDomainMaskLength] = React.useState(0)
+      const { onChange, ...other } = props
+      const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = event.target
+        const domainWithoutProtocol = value.startsWith('https://') ? value.slice(8) : value
+        setDomainMaskLength(domainWithoutProtocol.length + 8)
+
+        onChange({
+          target: {
+            name: props.name,
+            value: domainWithoutProtocol,
+          },
+        })
+      }
+
+      return (
+          <MaskedInput
+              {...other}
+              onChange={handleInputChange}
+              mask={[
+                'https://',
+                ...Array.from({ length:  domainMaskLength }, () => /[a-z0-9.]/), // need to fix a character limit
+              ]}
+              guide={false}
+          />
+      )
+    }
+)
+
+
 export default function Home() {
   const formik = useFormik({
     initialValues: {
@@ -66,9 +101,9 @@ export default function Home() {
       const formattedValues = {
         ...values,
         amount: parseFloat(values.amount),
-        count: parseFloat(values.count)
+        count: parseFloat(values.count),
       }
-      alert(JSON.stringify(formattedValues, null, 2));
+      console.log(JSON.stringify(formattedValues, null, 2))
     }
   })
 
@@ -78,13 +113,6 @@ export default function Home() {
       formik.setFieldValue('amount', amount + '.00')
     }
   }
-
-  const domainMask = [
-    'https://',
-    ...Array.from({ length: formik.values.domain.length }, () => /[a-z0-9.]/),
-  ]
-
-  const amountRef = React.useRef<NumericFormatProps>(null);
 
   return (
      <div className="m-8">
@@ -99,7 +127,6 @@ export default function Home() {
             InputProps={{
               inputComponent: NumericFormatCustomAmount as any,
               inputProps: {
-                ref: amountRef,
                 name: 'amount',
               },
             }}
@@ -132,9 +159,9 @@ export default function Home() {
             value={formik.values.domain}
             onChange={formik.handleChange('domain')}
             InputProps={{
-              inputComponent: MaskedInput as any,
+              inputComponent: MaskedInputCustom as any,
               inputProps: {
-                mask: domainMask,
+                name: 'domain',
               },
             }}
          />
