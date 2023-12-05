@@ -1,4 +1,5 @@
 'use client'
+import React, {useState} from 'react'
 import { TextField } from '@mui/material';
 import {useFormik} from "formik";
 import {NumericFormatCustomAmount} from "@/app/HOCs/CustomAmount";
@@ -7,28 +8,26 @@ import {MaskedInputCustom} from "@/app/HOCs/CustomDomain";
 
 
 export default function Home() {
-  const formik = useFormik({
+  const [amount, setAmount] = useState('')
+  const formik= useFormik({
     initialValues: {
       amount: '',
       count: '',
       domain: '',
     },
     onSubmit: (values) => {
-      const formattedValues = {
-        ...values,
-        amount: parseFloat(values.amount),
-        count: values.count,
-      }
-      console.log(JSON.stringify(formattedValues, null, 2))
+      console.log({...values})
     }
   })
 
   const handleBlur = () => {
-    const { amount } = formik.values;
-    if (amount && !/\.\d{2}$/.test(amount.toString())) {
+    const { amount } = formik.values
+    if (amount && !/\.\d{1,}$/.test(amount.toString())) {
       formik.setFieldValue('amount', amount + '.00')
+      setAmount(amount + '.00')
     }
   }
+
 
   return (
      <div className="m-8">
@@ -37,7 +36,7 @@ export default function Home() {
          <TextField
             className="ml-6 mr-6"
             label="Amount"
-            value={formik.values.amount}
+            value={amount}
             onBlur={handleBlur}
             onChange={formik.handleChange('amount')}
             InputProps={{
@@ -60,7 +59,6 @@ export default function Home() {
               },
             }}
          />
-
 
          <TextField
             className="ml-6 mr-6"

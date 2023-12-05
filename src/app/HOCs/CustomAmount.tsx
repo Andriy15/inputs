@@ -14,7 +14,7 @@ export const NumericFormatCustomAmount = forwardRef<NumericFormatProps, CustomPr
              onChange({
                target: {
                  name: props.name,
-                 value: values.value,
+                 value: parseFloat(values.value),
                },
              })
            }}
