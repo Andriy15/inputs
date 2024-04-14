@@ -1,5 +1,3 @@
-import React from "react";
-
 export interface CustomPropsNumber {
   onChange: (event: { target: { name: string; value: number } }) => void;
   name: string;
@@ -8,6 +6,7 @@ export interface CustomPropsNumber {
 export interface CustomPropsAmount {
     onChange: (event: { target: { name: string; value: number } }) => void;
     name: string;
+    value: string;
 }
 
 export interface CustomPropsString {
@@ -15,15 +14,5 @@ export interface CustomPropsString {
   name: string;
 }
 
-export interface PhoneNumber {
-  isValid(): boolean;
-  getNumber(format?: "international" | "national" | "rfc3966" | "e164"): string;
-}
-
-export interface PhoneInputProps {
-  name: string;
-  value: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
 
 

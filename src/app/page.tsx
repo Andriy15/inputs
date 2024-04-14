@@ -1,33 +1,23 @@
 'use client'
-import React, {useState} from 'react'
 import { TextField } from '@mui/material';
 import {useFormik} from "formik";
 import {NumericFormatCustomAmount} from "@/app/HOCs/CustomAmount";
 import {NumericFormatCustomCount} from "@/app/HOCs/CustomCount";
-import {MaskedInputCustom} from "@/app/HOCs/CustomDomain";
-
+import {DomainInputCustom} from "@/app/HOCs/CustomDomain";
+import {PhoneNumberInput} from "@/app/HOCs/CustomPhoneNumber";
 
 export default function Home() {
-  const [amount, setAmount] = useState('')
   const formik= useFormik({
     initialValues: {
       amount: '',
       count: '',
       domain: '',
+      phone: '',
     },
     onSubmit: (values) => {
       console.log({...values})
     }
   })
-
-  const handleBlur = () => {
-    const { amount } = formik.values
-    if (amount && !/\.\d{1,}$/.test(amount.toString())) {
-      formik.setFieldValue('amount', amount + '.00')
-      setAmount(amount + '.00')
-    }
-  }
-
 
   return (
      <div className="m-8">
@@ -36,14 +26,11 @@ export default function Home() {
          <TextField
             className="ml-6 mr-6"
             label="Amount"
-            value={amount}
-            onBlur={handleBlur}
+            value={formik.values.amount}
+            name='amount'
             onChange={formik.handleChange('amount')}
             InputProps={{
               inputComponent: NumericFormatCustomAmount as any,
-              inputProps: {
-                name: 'amount',
-              },
             }}
          />
 
@@ -52,11 +39,9 @@ export default function Home() {
             label="Count"
             value={formik.values.count}
             onChange={formik.handleChange('count')}
+            name='count'
             InputProps={{
               inputComponent: NumericFormatCustomCount as any,
-              inputProps: {
-                name: 'count',
-              },
             }}
          />
 
@@ -65,20 +50,27 @@ export default function Home() {
             label="Domain"
             value={formik.values.domain}
             onChange={formik.handleChange('domain')}
+            name='domain'
             InputProps={{
-              inputComponent: MaskedInputCustom as any,
-              inputProps: {
-                name: 'domain',
-              },
+              inputComponent: DomainInputCustom as any
             }}
          />
 
-         <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            type="submit"
-         >
-           Submit
-         </button>
+         <TextField
+            className="ml-6 mr-6"
+            label="Phone"
+            value={formik.values.phone}
+            onChange={formik.handleChange('phone')}
+            name='phone'
+            InputProps={{
+              inputComponent: PhoneNumberInput as any,
+            }}
+         />
+
+         <div>Amount: {formik.values.amount}</div>
+         <div>Count: {formik.values.count}</div>
+         <div>Domain: {formik.values.domain}</div>
+         <div>Phone: {formik.values.phone}</div>
        </form>
      </div>
   )

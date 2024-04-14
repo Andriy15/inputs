@@ -1,36 +1,54 @@
-// import PhoneNumber from "awesome-phonenumber";
-// import React from "react";
-// import { TextField } from "@mui/material";
-// import {PhoneInputProps} from "@/app/models";
-//
-//
-// function PhoneInput({ name, value, onChange }: PhoneInputProps) {
-//   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-//     const phoneNumber = new PhoneNumber(event.target.value);
-//     if (phoneNumber.isValid()) {
-//       onChange({
-//         target: {
-//           name,
-//           value: phoneNumber.getNumber("international"),
-//         },
-//       });
-//     }
-//   };
-//
-//   return (
-//      <TextField
-//         label="Phone Number"
-//         name={name}
-//         value={value}
-//         onChange={handleChange}
-//         helperText="+1 or +380 prefixes supported"
-//         InputProps={{
-//           inputProps: {
-//             type: "tel",
-//           },
-//         }}
-//      />
-//   );
-// }
-//
-// export default PhoneInput;
+import React, {forwardRef, useEffect, useState} from 'react';
+import {CustomPropsString} from "@/app/models";
+import {parsePhoneNumber} from 'awesome-phonenumber';
+import MaskedInput from "react-text-mask";
+
+export const PhoneNumberInput = forwardRef<CustomPropsString, CustomPropsString>(
+   function PhoneNumberInput(props, ref) {
+     const { onChange, ...other } = props
+     const [phoneNumber, setPhoneNumber] = useState('')
+     const [mask, setMask] = useState(['+', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/])
+
+     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+       const { value } = event.target
+       const pn = parsePhoneNumber( value )
+       if ( pn.valid ) {
+         const number = pn.number.e164
+         const phone = number.startsWith('+') ? number.slice(1) : `+${number}`
+         setPhoneNumber( phone )
+         console.log( phone )
+
+         if (pn.countryCode === 380) {
+           setMask(['+', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/])
+         } else if (pn.countryCode === 1) {
+           setMask(['+', /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/])
+         }
+
+         onChange({
+           target: {
+             name: props.name,
+             value: phone,
+           },
+         })
+       }
+       else {
+         setMask(['+', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/])
+         onChange({
+           target: {
+             name: props.name,
+             value: value,
+           },
+         })
+       }
+     }
+
+     return (
+        <MaskedInput
+           {...other}
+           onChange={handleInputChange}
+           mask={mask}
+           guide={false}
+        />
+     )
+   }
+)
