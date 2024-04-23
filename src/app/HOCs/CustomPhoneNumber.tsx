@@ -1,4 +1,4 @@
-import React, {forwardRef, useEffect, useState} from 'react';
+import React, {forwardRef, useState} from 'react';
 import {CustomPropsString} from "@/app/models";
 import {parsePhoneNumber} from 'awesome-phonenumber';
 import MaskedInput from "react-text-mask";
@@ -16,12 +16,13 @@ export const PhoneNumberInput = forwardRef<CustomPropsString, CustomPropsString>
          const number = pn.number.e164
          const phone = number.startsWith('+') ? number.slice(1) : `+${number}`
          setPhoneNumber( phone )
-         console.log( phone )
 
          if (pn.countryCode === 380) {
            setMask(['+', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/])
          } else if (pn.countryCode === 1) {
            setMask(['+', /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/])
+         } else {
+           console.log('Country code is not supported. Supported country codes: +380, +1')
          }
 
          onChange({
