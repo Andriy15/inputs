@@ -1,6 +1,6 @@
 import React, {forwardRef, useEffect, useState} from "react";
 import {NumberFormatValues, NumericFormat, NumericFormatProps} from "react-number-format";
-import {CustomPropsAmount} from "@/app/models";
+import {CustomPropsAmount} from "../models";
 
 export const NumericFormatCustomAmount = forwardRef<NumericFormatProps, CustomPropsAmount>(
    function NumericFormatCustom(props, ref) {

@@ -1,6 +1,6 @@
 import React, {forwardRef} from "react";
 import {NumericFormat, NumericFormatProps} from "react-number-format";
-import {CustomPropsNumber} from "@/app/models";
+import {CustomPropsNumber} from "../models";
 
 export const NumericFormatCustomCount = forwardRef<NumericFormatProps, CustomPropsNumber>(
    function NumericFormatCustom(props, ref) {

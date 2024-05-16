@@ -14,6 +14,21 @@ export interface CustomPropsString {
   name: string;
 }
 
+export interface Data {
+  amount: number;
+  count: number;
+  domain: string;
+  phone: string;
+}
+
+export interface FormData {
+  amount: number;
+  count: number;
+  domain: string;
+  phone: string;
+  id: string;
+}
+
 export enum Fields {
   amount = 'amount',
   count = 'count',
@@ -28,10 +43,16 @@ export const FORM_FIELDS = {
   [Fields.phone]: 'Phone',
 }
 
+export const REGEX_PATTERNS = {
+  [Fields.phone]: /^(1|380)\d*$/,
+}
+
 export const ErrorMessages = {
   required: 'This field is required',
-  min: ({ min }: { min: number }) => `Minimum numbers is ${min}`
+  min: ({ min }: { min: number }) => `Minimum numbers is ${min}`,
+  format: 'Country code is not supported. Supported country codes: +380, +1'
 }
+
 
 
 

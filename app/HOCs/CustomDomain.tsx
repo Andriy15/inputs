@@ -1,5 +1,5 @@
 import React, {forwardRef, useState} from "react";
-import {CustomPropsString} from "@/app/models";
+import {CustomPropsString} from "../models";
 import MaskedInput from "react-text-mask";
 
 export const DomainInputCustom = forwardRef<CustomPropsString, CustomPropsString>(

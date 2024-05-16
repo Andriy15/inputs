@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-import {ErrorMessages, Fields} from './models'
+import {ErrorMessages, Fields, REGEX_PATTERNS} from './models'
 
 export const fieldsSchema = yup.object().shape({
   [Fields.amount]: yup
@@ -15,12 +15,5 @@ export const fieldsSchema = yup.object().shape({
      .string()
      .required(ErrorMessages.required)
      .min(11, ErrorMessages.min)
-     // .test(Fields.phone, 'Invalid phone number', (value) => {
-     //   if (value.startsWith('+1')) {
-     //     return value.length === 11
-     //   } else if (value.startsWith('+380')) {
-     //     return value.length === 12
-     //   }
-     //   return false
-     // })
+     .matches(REGEX_PATTERNS[Fields.phone], ErrorMessages.format)
 })
