@@ -34,8 +34,6 @@ export default function EditForm({
 		},
 	})
 
-	console.log(formik.values)
-
 	return (
 		<div className="m-8">
 			<form onSubmit={formik.handleSubmit} className="space-y-4">
