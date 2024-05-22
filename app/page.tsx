@@ -1,12 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import { CreateData, UpdateData } from './ui/buttons'
-import { getItemFromStorage } from './utils/localStorage'
-import { Data } from './models'
+import { CreateData, UpdateData, DeleteData } from './ui/buttons'
 import { fetchData } from './lib/data'
 
-export default function Dashboard() {
+export default function Page() {
 	const data = fetchData() || []
 
 	return (
@@ -48,6 +45,9 @@ export default function Dashboard() {
 									</td>
 									<td>
 										<UpdateData id={item.id} />
+									</td>
+									<td>
+										<DeleteData id={item.id} />
 									</td>
 								</tr>
 							))}

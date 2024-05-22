@@ -1,6 +1,8 @@
-import EditIcon from '@mui/icons-material/Edit';
-import AddIcon from '@mui/icons-material/Add';
-import Link from 'next/link';
+import EditIcon from '@mui/icons-material/Edit'
+import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/Delete'
+import Link from 'next/link'
+import { deleteData } from '../lib/actions'
 
 export function CreateData() {
 	return (
@@ -18,5 +20,16 @@ export function UpdateData({ id }: { id: string }) {
 		<Link href={`/${id}/edit`} className="rounded-md border p-2 hover:bg-gray-100">
 			<EditIcon className="w-5" />
 		</Link>
+	)
+}
+
+export function DeleteData({ id }: { id: string }) {
+	return (
+		<button
+      className="rounded-md border p-2 hover:bg-gray-100"
+      onClick={() => deleteData(id)}
+    >
+			<DeleteIcon className="w-4" />
+		</button>
 	)
 }

@@ -14,12 +14,7 @@ import { DomainInputCustom } from '../HOCs/CustomDomain'
 import Link from 'next/link'
 import { updateData } from '../lib/actions'
 
-export default function EditForm({
-	data
-	}: {
-	data: FormData
-}) {
-
+export default function EditForm({ data }: { data: FormData }) {
 	const formik = useFormik({
 		initialValues: {
 			amount: data.amount,
@@ -28,7 +23,7 @@ export default function EditForm({
 			phone: data.phone,
 		},
 		validationSchema: fieldsSchema,
-		onSubmit: (values) => {
+		onSubmit: values => {
 			console.log({ ...values })
 			updateData(data.id, { ...values, id: data.id })
 		},
@@ -42,52 +37,59 @@ export default function EditForm({
 					className="w-full"
 					label={FORM_FIELDS[Fields.amount]}
 					helperText={getError(Fields.amount, formik.errors)}
-					defaultValue={formik.values.amount}
+					value={formik.values.amount}
 					name="amount"
 					onChange={formik.handleChange(Fields.amount)}
 					InputProps={{
 						inputComponent: NumericFormatCustomAmount as any,
 					}}
 				/>
+
 				{formik.errors.amount && <div className="text-red-500">{formik.errors.amount}</div>}
+
 				<TextField
 					error={!!formik.errors.count}
 					helperText={getError(Fields.count, formik.errors)}
 					className="w-full"
 					label={FORM_FIELDS[Fields.count]}
-					defaultValue={formik.values.count}
+					value={formik.values.count}
 					onChange={formik.handleChange(Fields.count)}
 					name="count"
 					InputProps={{
 						inputComponent: NumericFormatCustomCount as any,
 					}}
 				/>
+
 				{formik.errors.count && <div className="text-red-500">{formik.errors.count}</div>}
+
 				<TextField
 					error={!!formik.errors.domain}
 					helperText={getError(Fields.domain, formik.errors)}
 					className="w-full"
 					label={FORM_FIELDS[Fields.domain]}
-					defaultValue={formik.values.domain}
+					value={formik.values.domain}
 					onChange={formik.handleChange(Fields.domain)}
 					name="domain"
 					inputProps={{
 						inputComponent: DomainInputCustom as any,
 					}}
 				/>
+
 				{formik.errors.domain && <div className="text-red-500">{formik.errors.domain}</div>}
+
 				<TextField
 					error={!!formik.errors.phone}
 					helperText={getError(Fields.phone, formik.errors)}
 					className="w-full"
 					label={FORM_FIELDS[Fields.phone]}
-					defaultValue={formik.values.phone}
+					value={formik.values.phone}
 					onChange={formik.handleChange(Fields.phone)}
 					name="phone"
 					InputProps={{
 						inputComponent: PhoneNumberInput as any,
 					}}
 				/>
+
 				{formik.errors.phone && <div className="text-red-500">{formik.errors.phone}</div>}
 
 				<div className="mt-6 flex gap-4">
@@ -99,6 +101,8 @@ export default function EditForm({
 					</Link>
 					<Button type="submit">Edit Data</Button>
 				</div>
+
+				<span>{formik.values.phone}</span>
 			</form>
 		</div>
 	)

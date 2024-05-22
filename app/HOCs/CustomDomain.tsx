@@ -1,34 +1,46 @@
-import React, {forwardRef, useState} from "react";
-import {CustomPropsString} from "../models";
-import MaskedInput from "react-text-mask";
+import React, { forwardRef, useState } from 'react'
+import { CustomPropsDomain } from '../models'
+import MaskedInput from 'react-text-mask'
+import { IMaskInput } from 'react-imask'
 
-export const DomainInputCustom = forwardRef<CustomPropsString, CustomPropsString>(
-   function MaskedInputCustom(props, ref) {
-     const [domainMaskLength, setDomainMaskLength] = useState(0)
-     const { onChange, ...other } = props
-     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-       const { value } = event.target
-       const domainWithoutProtocol = value.startsWith('https://') ? value.slice(8) : value
-       setDomainMaskLength(domainWithoutProtocol.length + 8)
+export const DomainInputCustom = forwardRef<HTMLInputElement, CustomPropsDomain>(
+	function MaskedInputCustom(props, ref) {
+		const { onChange, ...other } = props
+		const [inputValue, setInputValue] = useState('')
+		const domain = "https://";
+		const MAX_LENGTH = other.maxLength ?? 31
 
-       onChange({
-         target: {
-           name: props.name,
-           value: domainWithoutProtocol,
-         },
-       })
-     }
+		const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+			const { value } = event.target
 
-     return (
-        <MaskedInput
-           {...other}
-           onChange={handleInputChange}
-           mask={[
-             'https://',
-             ...Array.from({ length:  domainMaskLength }, () => /[a-z0-9.]/),
-           ]}
-           guide={false}
-        />
-     )
-   }
+			const update = (domain: string) => {
+				onChange({
+					target: {
+						name: props.name,
+						value: domain.length ? `${domain}` : '',
+					},
+				})
+			}
+
+			const domainReg = value.replace('https://', '')
+			const maxValue = domainReg.length > MAX_LENGTH
+
+			if (maxValue) {
+				return
+			}
+
+			update(domainReg)
+			setInputValue(domainReg)
+		}
+
+		return (
+			<IMaskInput
+				{...other}
+				ref={ref}
+				value={`${domain}${inputValue}`}
+				onChange={handleInputChange}
+				mask={`${domain}[${new Array(other.maxLength ?? 31).join("*")}]`}
+			/>
+		)
+	}
 )

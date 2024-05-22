@@ -1,56 +1,44 @@
 import React, { forwardRef, useState } from 'react'
-import { CustomPropsString } from '../models'
+import { CustomPropsPhone } from '../models'
 import { parsePhoneNumber } from 'awesome-phonenumber'
 import { IMaskInput } from 'react-imask'
+import { IMaskInputProps } from 'react-imask'
 
-export const PhoneNumberInput = forwardRef<CustomPropsString, CustomPropsString>(
+export const PhoneNumberInput = forwardRef<IMaskInputProps<HTMLInputElement>, CustomPropsPhone>(
 	function PhoneNumberInput(props, ref) {
 		const { onChange, ...other } = props
 		const [phoneNumber, setPhoneNumber] = useState('')
-		const [mask, setMask] = useState('')
+		const MAX_LENGTH = other.maxLength ?? 16
 
 		const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 			const { value } = event.target
+
+			const update = (phone: string) => {
+				onChange({
+					target: {
+						name: props.name,
+						value: phone.length ? phone : '',
+					},
+				})
+			}
+
 			const pn = parsePhoneNumber(value)
 
-			if (pn.valid) {
-				const number = pn.number.e164
-				const phone = number.startsWith('+') ? number.slice(1) : `+${number}`
-				setPhoneNumber(phone)
+			const number = pn?.number?.input
+			let phoneReg = number ? number.replace(/\D/g, '') : ''
+			const maxValue = phoneReg.length > MAX_LENGTH
 
-				const countryCode = pn.countryCode
-				setMask(getMaskForCountry(countryCode))
-
-				onChange({
-					target: {
-						name: props.name,
-						value: phone,
-					},
-				})
-			} else {
-				setPhoneNumber(value)
-
-				if (value) {
-					setMask(getMaskForCountry(parseInt(value)))
-				}
-
-				onChange({
-					target: {
-						name: props.name,
-						value: value,
-					},
-				})
+			if (maxValue) {
+				phoneReg = phoneReg.slice(0, MAX_LENGTH)
 			}
-		}
 
-		const getMaskForCountry = (countryCode: number) => {
-			if (countryCode === 1) {
-				return '+{0} 000-000-0000'
-			} else if (countryCode === 380) {
-				return '+{000} 00-000-0000'
-			} else {
-				return ''
+			if (maxValue || pn.possibility === 'too-long') {
+				return
 			}
+			const formattedPhoneNumber = phoneReg.length >= 1 ? `+${phoneReg}` : phoneReg
+
+			setPhoneNumber(pn?.number?.international ?? formattedPhoneNumber)
+			update(phoneReg)
 		}
 
 		return (
@@ -59,10 +47,6 @@ export const PhoneNumberInput = forwardRef<CustomPropsString, CustomPropsString>
 				ref={ref}
 				value={phoneNumber}
 				onChange={handleInputChange}
-				mask={mask}
-				onAccept={(value: string) => {
-					setPhoneNumber(value)
-				}}
 			/>
 		)
 	},

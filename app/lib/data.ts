@@ -6,7 +6,7 @@ export function fetchData(): FormData[] {
 	return getItemFromStorage('data')
 }
 
-export function fetchDataById(query: string) {
+export function fetchDataById(id: string) {
 	noStore()
 
 	const data = getItemFromStorage('data')
@@ -14,10 +14,10 @@ export function fetchDataById(query: string) {
 	if (!data) {
 		console.log('No data in local storage')
 		return
-}
+	}
 
-	const res = data.find((item: FormData) => item.id === query)
-	
+	const res = data.find((item: FormData) => item.id === id)
+
 	if (!res) {
 		console.log('No item found')
 		return
