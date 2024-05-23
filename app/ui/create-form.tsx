@@ -12,11 +12,12 @@ import { FORM_FIELDS, Fields } from '../models'
 import { getError } from '../getErrors'
 import { createData } from '../lib/actions'
 import { CustomPassword } from '../HOCs/CustomPassword'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PassChecklist from './pass-checklist'
 
 export default function CreateForm() {
 	const [showPassword, setShowPassword] = useState(false)
+	const [submitAttempted, setSubmitAttempted] = useState(false)
 	const formik = useFormik({
 		initialValues: {
 			amount: '',
@@ -38,6 +39,13 @@ export default function CreateForm() {
 
 	const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
+	}
+
+	const handleOnSubmit = () => {
+		if (formik.isValid) {
+			return
+		}
+		setSubmitAttempted(true)
 	}
 
 	return (
@@ -108,7 +116,7 @@ export default function CreateForm() {
 
 				<TextField
 					error={!!formik.errors.password}
-					className='w-full'
+					className="w-full"
 					label={FORM_FIELDS[Fields.password]}
 					value={formik.values.password}
 					onChange={formik.handleChange(Fields.password)}
@@ -130,21 +138,25 @@ export default function CreateForm() {
 					}}
 				/>
 
-
 				<PassChecklist
 					rules={[
 						{ rule: 'minLength', message: 'Password must be at least 8 characters' },
-						{ rule: 'containsUpperAndLowerCase', message: 'Password must contain an uppercase and lowercase letter' },
+						{
+							rule: 'containsUpperAndLowerCase',
+							message: 'Password must contain an uppercase and lowercase letter',
+						},
 						{ rule: 'containsSpecialChar', message: 'Password must contain a special character' },
 						{ rule: 'containsNumber', message: 'Password must contain a number' },
 					]}
 					minLength={8}
 					value={formik.values.password}
+					submit={submitAttempted && !formik.isValid}
 				/>
 
 				<button
 					className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
 					type="submit"
+					onClick={handleOnSubmit}
 				>
 					Submit
 				</button>

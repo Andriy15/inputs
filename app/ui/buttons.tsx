@@ -25,10 +25,7 @@ export function UpdateData({ id }: { id: string }) {
 
 export function DeleteData({ id }: { id: string }) {
 	return (
-		<button
-      className="rounded-md border p-2 hover:bg-gray-100"
-      onClick={() => deleteData(id)}
-    >
+		<button className="rounded-md border p-2 hover:bg-gray-100" onClick={() => deleteData(id)}>
 			<DeleteIcon className="w-4" />
 		</button>
 	)

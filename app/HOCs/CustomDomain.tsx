@@ -7,7 +7,7 @@ export const DomainInputCustom = forwardRef<HTMLInputElement, CustomPropsDomain>
 	function MaskedInputCustom(props, ref) {
 		const { onChange, ...other } = props
 		const [inputValue, setInputValue] = useState('')
-		const domain = "https://";
+		const domain = 'https://'
 		const MAX_LENGTH = other.maxLength ?? 31
 
 		const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -39,8 +39,8 @@ export const DomainInputCustom = forwardRef<HTMLInputElement, CustomPropsDomain>
 				ref={ref}
 				value={`${domain}${inputValue}`}
 				onChange={handleInputChange}
-				mask={`${domain}[${new Array(other.maxLength ?? 31).join("*")}]`}
+				mask={`${domain}[${new Array(other.maxLength ?? 31).join('*')}]`}
 			/>
 		)
-	}
+	},
 )

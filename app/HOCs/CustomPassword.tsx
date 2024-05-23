@@ -16,12 +16,6 @@ export const CustomPassword = forwardRef<HTMLInputElement, CustomPropsPassword>(
 			})
 		}
 
-		return (
-			<input
-				{...other}
-				ref={ref}
-				onChange={handleInputChange}
-			/>
-		)
-	}
+		return <input {...other} ref={ref} onChange={handleInputChange} />
+	},
 )

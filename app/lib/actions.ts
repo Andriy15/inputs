@@ -31,7 +31,7 @@ export const updateData = (id: string, data: FormData) => {
 }
 
 export const deleteData = (id: string) => {
-  const formData = fetchData()
-  const newData = formData.filter(item => item.id !== id)
-  setItemToStorage('data', newData)
+	const formData = fetchData()
+	const newData = formData.filter(item => item.id !== id)
+	setItemToStorage('data', newData)
 }

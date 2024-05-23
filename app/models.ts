@@ -1,4 +1,4 @@
-import {parsePhoneNumber} from 'awesome-phonenumber'
+import { parsePhoneNumber } from 'awesome-phonenumber'
 import * as yup from 'yup'
 
 export const phoneNumber = yup
@@ -7,11 +7,11 @@ export const phoneNumber = yup
 	.test({
 		name: 'phone',
 		message: 'Invalid phone number',
-		test: function(value) {
+		test: function (value) {
 			if (!value) return true
 			const pn = parsePhoneNumber(`+${value}`)
 			return pn.valid
-		}
+		},
 	})
 
 export interface CustomPropsNumber {
@@ -76,6 +76,10 @@ export const FORM_FIELDS = {
 
 export const REGEX_PATTERNS = {
 	[Fields.phone]: /^(1|380)\d*$/,
+	LOWER_CASE: /[a-z]/,
+	UPPER_CASE: /[A-Z]/,
+	NUMBERS: /\d/,
+	SPECIAL_CHARACTERS: /[^A-Za-z0-9]/,
 }
 
 export const ErrorMessages = {

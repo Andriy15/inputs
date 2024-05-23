@@ -41,13 +41,6 @@ export const PhoneNumberInput = forwardRef<IMaskInputProps<HTMLInputElement>, Cu
 			update(phoneReg)
 		}
 
-		return (
-			<IMaskInput
-				{...other}
-				ref={ref}
-				value={phoneNumber}
-				onChange={handleInputChange}
-			/>
-		)
+		return <IMaskInput {...other} ref={ref} value={phoneNumber} onChange={handleInputChange} />
 	},
 )
