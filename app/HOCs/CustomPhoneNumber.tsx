@@ -2,9 +2,8 @@ import React, { forwardRef, useState } from 'react'
 import { CustomPropsPhone } from '../models'
 import { parsePhoneNumber } from 'awesome-phonenumber'
 import { IMaskInput } from 'react-imask'
-import { IMaskInputProps } from 'react-imask'
 
-export const PhoneNumberInput = forwardRef<IMaskInputProps<HTMLInputElement>, CustomPropsPhone>(
+export const PhoneNumberInput = forwardRef<HTMLInputElement, CustomPropsPhone>(
 	function PhoneNumberInput(props, ref) {
 		const { onChange, ...other } = props
 		const [phoneNumber, setPhoneNumber] = useState('')
@@ -17,7 +16,7 @@ export const PhoneNumberInput = forwardRef<IMaskInputProps<HTMLInputElement>, Cu
 				onChange({
 					target: {
 						name: props.name,
-						value: phone.length ? phone : '',
+						value: phone.length ? phone : ''
 					},
 				})
 			}
@@ -42,5 +41,5 @@ export const PhoneNumberInput = forwardRef<IMaskInputProps<HTMLInputElement>, Cu
 		}
 
 		return <IMaskInput {...other} ref={ref} value={phoneNumber} onChange={handleInputChange} />
-	},
+	}
 )

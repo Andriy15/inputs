@@ -55,6 +55,7 @@ export interface FormData {
 	count: number
 	domain: string
 	phone: string
+	password: string
 	id: string
 }
 
@@ -66,7 +67,7 @@ export enum Fields {
 	password = 'password',
 }
 
-export const FORM_FIELDS = {
+export const FORM_LABELS = {
 	[Fields.amount]: 'Amount',
 	[Fields.count]: 'Count',
 	[Fields.domain]: 'Domain',

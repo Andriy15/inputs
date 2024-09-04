@@ -12,5 +12,5 @@ export const fieldsSchema = yup.object().shape({
 		.matches(REGEX_PATTERNS.SPECIAL_CHARACTERS)
 		.matches(REGEX_PATTERNS.LOWER_CASE)
 		.matches(REGEX_PATTERNS.UPPER_CASE)
-		.matches(REGEX_PATTERNS.NUMBERS),
+		.matches(REGEX_PATTERNS.NUMBERS)
 })

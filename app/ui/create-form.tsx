@@ -8,11 +8,10 @@ import { NumericFormatCustomCount } from '../HOCs/CustomCount'
 import { DomainInputCustom } from '../HOCs/CustomDomain'
 import { PhoneNumberInput } from '../HOCs/CustomPhoneNumber'
 import { fieldsSchema } from '../schema'
-import { FORM_FIELDS, Fields } from '../models'
+import { Fields, FORM_LABELS } from '../models'
 import { getError } from '../getErrors'
 import { createData } from '../lib/actions'
-import { CustomPassword } from '../HOCs/CustomPassword'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import PassChecklist from './pass-checklist'
 
 export default function CreateForm() {
@@ -55,7 +54,7 @@ export default function CreateForm() {
 					error={!!formik.errors.amount}
 					helperText={getError(Fields.amount, formik.errors)}
 					className="w-full"
-					label={FORM_FIELDS[Fields.amount]}
+					label={FORM_LABELS[Fields.amount]}
 					value={formik.values.amount}
 					onChange={formik.handleChange(Fields.amount)}
 					name="amount"
@@ -70,7 +69,7 @@ export default function CreateForm() {
 					error={!!formik.errors.count}
 					helperText={getError(Fields.count, formik.errors)}
 					className="w-full"
-					label={FORM_FIELDS[Fields.count]}
+					label={FORM_LABELS[Fields.count]}
 					value={formik.values.count}
 					onChange={formik.handleChange(Fields.count)}
 					name="count"
@@ -85,7 +84,7 @@ export default function CreateForm() {
 					error={!!formik.errors.domain}
 					helperText={getError(Fields.domain, formik.errors)}
 					className="w-full"
-					label={FORM_FIELDS[Fields.domain]}
+					label={FORM_LABELS[Fields.domain]}
 					value={formik.values.domain}
 					onChange={formik.handleChange(Fields.domain)}
 					name="domain"
@@ -102,7 +101,7 @@ export default function CreateForm() {
 					error={!!formik.errors.phone}
 					helperText={getError(Fields.phone, formik.errors)}
 					className="w-full"
-					label={FORM_FIELDS[Fields.phone]}
+					label={FORM_LABELS[Fields.phone]}
 					value={formik.values.phone}
 					onChange={formik.handleChange(Fields.phone)}
 					name="phone"
@@ -117,7 +116,7 @@ export default function CreateForm() {
 				<TextField
 					error={!!formik.errors.password}
 					className="w-full"
-					label={FORM_FIELDS[Fields.password]}
+					label={FORM_LABELS[Fields.password]}
 					value={formik.values.password}
 					onChange={formik.handleChange(Fields.password)}
 					name="password"
