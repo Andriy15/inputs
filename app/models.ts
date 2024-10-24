@@ -36,6 +36,7 @@ export interface CustomPropsPhone {
 	onChange: (event: { target: { name: string; value: string } }) => void
 	name: string
 	maxLength: number
+	value: string
 }
 
 export interface CustomPropsPassword {
@@ -66,6 +67,11 @@ export enum Fields {
 	phone = 'phone',
 	password = 'password',
 }
+//
+// export enum Country {
+// 	USA = 'US',
+// 	UA = 'UA',
+// }
 
 export const FORM_LABELS = {
 	[Fields.amount]: 'Amount',

@@ -1,27 +1,24 @@
-import React, { forwardRef, useState } from 'react'
+import React, { forwardRef, useState, useEffect } from 'react'
 import { CustomPropsPhone } from '../models'
 import { parsePhoneNumber } from 'awesome-phonenumber'
-import { IMaskInput } from 'react-imask'
 
 export const PhoneNumberInput = forwardRef<HTMLInputElement, CustomPropsPhone>(
 	function PhoneNumberInput(props, ref) {
 		const { onChange, ...other } = props
-		const [phoneNumber, setPhoneNumber] = useState('')
+		const [phoneNumber, setPhoneNumber] = useState(other.value ?? '')
 		const MAX_LENGTH = other.maxLength ?? 16
 
-		const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-			const { value } = event.target
+		const update = (phone: string) => {
+			onChange({
+				target: {
+					name: props.name,
+					value: phone.length ? phone : '',
+				},
+			})
+		}
 
-			const update = (phone: string) => {
-				onChange({
-					target: {
-						name: props.name,
-						value: phone.length ? phone : ''
-					},
-				})
-			}
-
-			const pn = parsePhoneNumber(value)
+		const setMask = (value = "") => {
+			const pn = parsePhoneNumber(`+${value}`)
 
 			const number = pn?.number?.input
 			let phoneReg = number ? number.replace(/\D/g, '') : ''
@@ -40,6 +37,21 @@ export const PhoneNumberInput = forwardRef<HTMLInputElement, CustomPropsPhone>(
 			update(phoneReg)
 		}
 
-		return <IMaskInput {...other} ref={ref} value={phoneNumber} onChange={handleInputChange} />
-	}
+		useEffect(() => {
+			setMask(other.value)
+		}, [other.value])
+
+		const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+			setMask(event.target.value)
+		}
+
+		return (
+			<input
+				{...other}
+				inputMode='tel'
+				ref={ref}
+				value={phoneNumber}
+				onChange={handleInputChange} />
+		)
+	},
 )

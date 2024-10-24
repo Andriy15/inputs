@@ -6,10 +6,10 @@ import { fieldsSchema } from '../schema'
 import { Fields } from '../models'
 import { getError } from '../getErrors'
 import { Button, TextField, InputAdornment, IconButton } from '@mui/material'
-import { NumericFormatCustomAmount } from '../HOCs/CustomAmount'
-import { NumericFormatCustomCount } from '../HOCs/CustomCount'
-import { PhoneNumberInput } from '../HOCs/CustomPhoneNumber'
-import { DomainInputCustom } from '../HOCs/CustomDomain'
+import { NumericFormatCustomAmount } from '../customs/CustomAmount'
+import { NumericFormatCustomCount } from '../customs/CustomCount'
+import { PhoneNumberInput } from '../customs/CustomPhoneNumber'
+import { DomainInputCustom } from '../customs/CustomDomain'
 import Link from 'next/link'
 import { updateData } from '../lib/actions'
 import { useState } from 'react'
@@ -97,7 +97,6 @@ export default function EditForm({ data }: { data: FormData }) {
 
 				<TextField
 					error={!!formik.errors.phone}
-					helperText={getError(Fields.phone, formik.errors)}
 					className="w-full"
 					label={FORM_LABELS[Fields.phone]}
 					value={formik.values.phone}
@@ -164,7 +163,6 @@ export default function EditForm({ data }: { data: FormData }) {
 					</Button>
 				</div>
 
-				<span>{formik.values.phone}</span>
 			</form>
 		</div>
 	)
